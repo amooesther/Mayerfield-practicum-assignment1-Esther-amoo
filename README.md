@@ -4,7 +4,7 @@ A modern, responsive, single-page website for **FitZone Fitness Studio**, built 
 
 ---
 
-## 📋 Features
+##  Features
 
 - **Pure HTML5 & CSS3**: 100% vanilla implementation with zero JavaScript and no CSS frameworks (no Bootstrap, Tailwind, etc.).
 - **Semantic HTML5 Landmarks**: Built using `<header>`, `<nav>`, `<main>`, `<section>`, `<article>`, `<address>`, `<table>`, and `<footer>` for maximum accessibility and SEO structure.
@@ -19,7 +19,7 @@ A modern, responsive, single-page website for **FitZone Fitness Studio**, built 
 
 ---
 
-## 📑 Page Sections
+##  Page Sections
 
 1. **Header & Navigation**: Brand logo with neon lime accent and anchor navigation links.
 2. **Hero Section**: High-impact headline with neon accents, supporting mission statement, and full-width container divider rule.
@@ -31,7 +31,7 @@ A modern, responsive, single-page website for **FitZone Fitness Studio**, built 
 
 ---
 
-## 📁 File Structure
+##  File Structure
 
 ```text
 Assignment-Esther/
@@ -46,7 +46,7 @@ Assignment-Esther/
 
 ---
 
-## 🚀 How to View
+##  How to View
 
 1. **Directly in Browser**: Double-click `index.html` or open it with your preferred web browser (Chrome, Safari, Firefox, Edge).
 2. **Local Development Server**:
