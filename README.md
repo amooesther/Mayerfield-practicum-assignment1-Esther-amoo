@@ -51,8 +51,8 @@ Assignment-Esther/
 1. **Directly in Browser**: Double-click `index.html` or open it with your preferred web browser (Chrome, Safari, Firefox, Edge).
 2. **Local Development Server**:
    ```bash
-   # Using Python 3
-   python3 -m http.server 8000
+ 
+    http.server 8000
    ```
    Open `http://localhost:8000` in your browser.
 
