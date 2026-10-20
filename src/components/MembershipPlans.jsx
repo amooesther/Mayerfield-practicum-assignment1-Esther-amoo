@@ -1,4 +1,4 @@
-import plans from '../data/plans';
+import { plans } from '../data';
 
 function MembershipPlans() {
   return (

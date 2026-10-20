@@ -1,4 +1,4 @@
-import schedule from '../data/schedule';
+import { schedule } from '../data';
 
 function ClassSchedule() {
   return (
