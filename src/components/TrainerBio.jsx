@@ -1,18 +1,32 @@
 import { useState } from 'react';
 import { trainers } from '../data';
 import StarRating from './StarRating';
+import QuantityStepper from './QuantityStepper';
 
 const FILTER_OPTIONS = ['All', 'Strength', 'Group', 'Personal'];
 
-function TrainerBio({ filter: externalFilter, onFilterChange: externalOnFilterChange, ratings = {}, onRate }) {
+function TrainerBio({
+  filter: externalFilter,
+  onFilterChange: externalOnFilterChange,
+  ratings = {},
+  onRate,
+  sessions = {},
+  onSessionChange,
+}) {
   // Real filter on the main grid, built with useState
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [localRatings, setLocalRatings] = useState({});
+  const [localSessions, setLocalSessions] = useState({});
 
   // Support both lifted state (via props from App) and local component state
   const activeFilter = externalFilter !== undefined ? externalFilter : selectedCategory;
   const currentRatings = ratings && Object.keys(ratings).length > 0 ? ratings : localRatings;
+  const currentSessions = sessions && Object.keys(sessions).length > 0 ? sessions : localSessions;
+
   const handleRate = onRate || ((id, val) => setLocalRatings((prev) => ({ ...prev, [id]: val })));
+  const handleSessionChange =
+    onSessionChange ||
+    ((id, count) => setLocalSessions((prev) => ({ ...prev, [id]: count })));
 
   const handleFilterClick = (category) => {
     setSelectedCategory(category);
@@ -80,10 +94,20 @@ function TrainerBio({ filter: externalFilter, onFilterChange: externalOnFilterCh
                   <p className="text-text-muted text-sm mb-3">{trainer.role}</p>
                   <p className="text-text-secondary text-sm leading-relaxed flex-1">{trainer.bio}</p>
 
-                  {/* Controlled StarRating per trainer */}
-                  <StarRating
-                    value={currentRatings[trainer.id] || 0}
-                    onChange={(val) => handleRate(trainer.id, val)}
+                  {/* Controlled component #1: StarRating reused per item */}
+                  <div className="mt-4">
+                    <span className="text-xs text-text-muted">Member Rating:</span>
+                    <StarRating
+                      value={currentRatings[trainer.id] || 0}
+                      onChange={(val) => handleRate(trainer.id, val)}
+                    />
+                  </div>
+
+                  {/* Controlled component #2: QuantityStepper reused per item */}
+                  <QuantityStepper
+                    value={currentSessions[trainer.id] || 0}
+                    onChange={(count) => handleSessionChange(trainer.id, count)}
+                    label="Book Sessions"
                   />
 
                   <a
@@ -101,4 +125,5 @@ function TrainerBio({ filter: externalFilter, onFilterChange: externalOnFilterCh
     </section>
   );
 }
+
 export default TrainerBio;

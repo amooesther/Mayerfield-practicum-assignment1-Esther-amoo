@@ -10,9 +10,14 @@ import Footer from './components/Footer';
 function App() {
   const [trainerFilter, setTrainerFilter] = useState('All');
   const [ratings, setRatings] = useState({});
+  const [sessions, setSessions] = useState({});
 
   function handleRating(trainerId, value) {
     setRatings((prev) => ({ ...prev, [trainerId]: value }));
+  }
+
+  function handleSessionChange(trainerId, count) {
+    setSessions((prev) => ({ ...prev, [trainerId]: count }));
   }
 
   return (
@@ -27,6 +32,8 @@ function App() {
           onFilterChange={setTrainerFilter}
           ratings={ratings}
           onRate={handleRating}
+          sessions={sessions}
+          onSessionChange={handleSessionChange}
         />
         <MembershipPlans />
       </main>
@@ -34,4 +41,5 @@ function App() {
     </div>
   );
 }
+
 export default App;
