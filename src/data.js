@@ -74,3 +74,4 @@ export const aboutFeatures = [
 ];
 
 export default trainers;
+
