@@ -1,3 +1,5 @@
+import { aboutFeatures } from '../data';
+
 function About() {
   return (
     <section id="about" className="py-20 scroll-mt-20">
@@ -24,12 +26,9 @@ function About() {
             </a>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            {[
-              { title: 'Expert Trainers', text: 'Get guidance and support from dedicated fitness professionals.' },
-              { title: 'Supportive Community', text: 'Train alongside people who encourage you to keep improving.' },
-            ].map((card) => (
+            {aboutFeatures.map((card) => (
               <article
-                key={card.title}
+                key={card.id || card.title}
                 className="bg-card border border-border rounded-xl p-7 hover:border-accent/40 transition-colors"
               >
                 <h3 className="text-base font-bold mb-2">{card.title}</h3>
@@ -43,4 +42,3 @@ function About() {
   );
 }
 export default About;
-
