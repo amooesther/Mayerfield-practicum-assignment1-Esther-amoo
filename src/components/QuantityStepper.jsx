@@ -32,3 +32,4 @@ function QuantityStepper({ value = 0, onChange, min = 0, max = 10, label = 'Week
 }
 
 export default QuantityStepper;
+
