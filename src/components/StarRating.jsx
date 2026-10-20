@@ -19,3 +19,4 @@ function StarRating({ value, onChange, max = 5 }) {
   );
 }
 export default StarRating;
+

@@ -76,3 +76,4 @@ function TrainerBio({ filter, onFilterChange, ratings, onRate }) {
   );
 }
 export default TrainerBio;
+

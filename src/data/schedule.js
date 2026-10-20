@@ -6,3 +6,4 @@ const schedule = [
   { id: 5, className: 'Group Fitness',     day: 'Saturday',  time: '09:00–10:00', trainer: 'Sarah Mitchell', level: 'All Levels'   },
 ];
 export default schedule;
+
