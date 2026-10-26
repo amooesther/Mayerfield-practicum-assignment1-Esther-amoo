@@ -32,6 +32,11 @@ app.use(
 // 2. Body Parser
 app.use(express.json());
 
+app.use("/api/auth", (req, res, next) => {
+  res.set("Cache-Control", "no-store");
+  next();
+});
+
 // 3. PostgreSQL-backed Session Store
 const PgSession = connectPgSimple(session);
 
@@ -42,7 +47,7 @@ app.use(
       tableName: 'session',
       createTableIfMissing: true,
     }),
-    secret: process.env.SESSION_SECRET || 'dev_session_secret_fitzone_2026',
+    secret: process.env.SESSION_SECRET ,
     resave: false,
     saveUninitialized: false,
     proxy: isProduction,
