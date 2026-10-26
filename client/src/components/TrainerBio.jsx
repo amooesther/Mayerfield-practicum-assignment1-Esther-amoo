@@ -1,5 +1,6 @@
-import { useState } from 'react';
-import { trainers } from '../data';
+import { useState, useEffect, useCallback } from 'react';
+import { trainers as fallbackTrainers } from '../data';
+import api from '../services/api';
 import StarRating from './StarRating';
 import QuantityStepper from './QuantityStepper';
 
@@ -13,10 +14,40 @@ function TrainerBio({
   sessions = {},
   onSessionChange,
 }) {
-  // Real filter on the main grid, built with useState
+  // 1. Data state (from backend API with local fallback)
+  const [trainersList, setTrainersList] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [apiError, setApiError] = useState(null);
+
+  // 2. Real filter on the main grid, built with useState
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [localRatings, setLocalRatings] = useState({});
   const [localSessions, setLocalSessions] = useState({});
+
+  // 3. Fetch products/trainers from backend API
+  const fetchTrainers = useCallback(async () => {
+    setIsLoading(true);
+    setApiError(null);
+    try {
+      const data = await api.getProducts();
+      if (Array.isArray(data) && data.length > 0) {
+        setTrainersList(data);
+      } else {
+        // Fallback if database is empty before seed
+        setTrainersList(fallbackTrainers);
+      }
+    } catch (err) {
+      console.warn('API fetch failed, using fallback data:', err.message);
+      setApiError('Could not connect to live database. Displaying local data.');
+      setTrainersList(fallbackTrainers);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchTrainers();
+  }, [fetchTrainers]);
 
   // Support both lifted state (via props from App) and local component state
   const activeFilter = externalFilter !== undefined ? externalFilter : selectedCategory;
@@ -36,8 +67,10 @@ function TrainerBio({
   };
 
   const filtered = activeFilter === 'All'
-    ? trainers
-    : trainers.filter((t) => t.category.toLowerCase() === activeFilter.toLowerCase());
+    ? trainersList
+    : trainersList.filter(
+        (t) => t.category && t.category.toLowerCase() === activeFilter.toLowerCase()
+      );
 
   return (
     <section id="trainers" className="py-20 scroll-mt-20">
@@ -71,10 +104,44 @@ function TrainerBio({
           </div>
         </div>
 
-        {/* Main Grid */}
-        {filtered.length === 0 ? (
-          <p className="text-center text-text-muted py-12">No trainers found in this category.</p>
+        {/* API Error / Offline notice with Retry Button */}
+        {apiError && (
+          <div className="mb-8 p-4 rounded-xl bg-[#1c1c1c] border border-yellow-500/30 flex items-center justify-between gap-4">
+            <span className="text-xs text-yellow-400 font-medium">
+              ℹ️ {apiError}
+            </span>
+            <button
+              type="button"
+              onClick={fetchTrainers}
+              className="text-xs font-bold text-accent hover:underline flex-shrink-0"
+            >
+              Retry Connection
+            </button>
+          </div>
+        )}
+
+        {/* Loading State Skeleton */}
+        {isLoading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 animate-pulse">
+            {[1, 2, 3].map((n) => (
+              <div key={n} className="bg-card border border-border rounded-xl overflow-hidden h-[440px]">
+                <div className="aspect-[289/216] bg-[#222]" />
+                <div className="p-6 space-y-3">
+                  <div className="h-5 bg-[#252525] rounded w-1/2" />
+                  <div className="h-4 bg-[#252525] rounded w-1/3" />
+                  <div className="h-14 bg-[#252525] rounded w-full" />
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : filtered.length === 0 ? (
+          /* Empty State */
+          <div className="text-center py-16 bg-card border border-border rounded-2xl p-8">
+            <p className="text-base text-text-secondary font-semibold">No trainers found in this category.</p>
+            <p className="text-xs text-text-muted mt-1">Try selecting "All Trainers" above.</p>
+          </div>
         ) : (
+          /* Main Database-Driven Grid */
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {filtered.map((trainer) => (
               <article
@@ -90,7 +157,14 @@ function TrainerBio({
                   />
                 </div>
                 <div className="p-6 flex flex-col flex-1">
-                  <h3 className="text-lg font-bold mb-1">{trainer.name}</h3>
+                  <div className="flex items-start justify-between gap-2 mb-1">
+                    <h3 className="text-lg font-bold">{trainer.name}</h3>
+                    {trainer.price && (
+                      <span className="text-xs font-bold text-accent bg-accent/10 px-2 py-0.5 rounded border border-accent/20">
+                        {trainer.price}
+                      </span>
+                    )}
+                  </div>
                   <p className="text-text-muted text-sm mb-3">{trainer.role}</p>
                   <p className="text-text-secondary text-sm leading-relaxed flex-1">{trainer.bio}</p>
 
