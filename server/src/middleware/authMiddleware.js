@@ -10,3 +10,4 @@ export function requireAuth(req, res, next) {
     message: 'Authentication required. Please log in.',
   });
 }
+

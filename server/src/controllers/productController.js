@@ -40,3 +40,4 @@ export async function getProductById(req, res, next) {
     next(error);
   }
 }
+

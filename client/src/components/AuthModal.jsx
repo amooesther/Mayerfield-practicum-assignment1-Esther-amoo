@@ -205,3 +205,4 @@ function AuthModal({ isOpen, onClose, initialTab = 'login' }) {
 }
 
 export default AuthModal;
+

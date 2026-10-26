@@ -97,3 +97,4 @@ test('GET /api/auth/me returns user: null when unauthenticated', async () => {
   const data = await res.json();
   assert.equal(data.user, null);
 });
+

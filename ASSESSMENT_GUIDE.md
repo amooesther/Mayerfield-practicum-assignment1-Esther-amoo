@@ -131,3 +131,4 @@
 | `server/database/schema.sql` | SQL definitions for `users`, `products`, and `session` tables. |
 | `server/database/seed.js` | Seeds initial trainer data into PostgreSQL without duplicates. |
 | `server/test/api.test.js` | Automated test suite verifying health check, input validation, and auth endpoints. |
+

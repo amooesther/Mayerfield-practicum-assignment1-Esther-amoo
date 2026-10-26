@@ -8,7 +8,7 @@ export function notFoundHandler(req, res, next) {
 }
 
 export function errorHandler(err, req, res, next) {
-  console.error('Server Error:', err.message);
+  console.error("Server Error:", err);
 
   const statusCode = res.statusCode !== 200 && res.statusCode !== 204 ? res.statusCode : 500;
   const isProduction = process.env.NODE_ENV === 'production';
@@ -21,3 +21,4 @@ export function errorHandler(err, req, res, next) {
     ...(isProduction ? {} : { stack: err.stack }),
   });
 }
+
