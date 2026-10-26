@@ -1,58 +1,119 @@
-# FitZone Fitness Studio
+# FitZone Fitness Studio — React + Tailwind Rebuild
 
-A modern, responsive, single-page website for **FitZone Fitness Studio**, built with pure HTML5 and CSS3 (no JavaScript, no external frameworks or libraries).
-
----
-
-##  Features
-
-- **Pure HTML5 & CSS3**: 100% vanilla implementation with zero JavaScript and no CSS frameworks (no Bootstrap, Tailwind, etc.).
-- **Semantic HTML5 Landmarks**: Built using `<header>`, `<nav>`, `<main>`, `<section>`, `<article>`, `<address>`, `<table>`, and `<footer>` for maximum accessibility and SEO structure.
-- **Strict Heading Hierarchy**: Contains exactly one `<h1>` in the Hero section (`Build Strength. Become Stronger.`), with section titles using `<h2>` and card headers using `<h3>`.
-- **Working Navigation Links**: Header anchor links smoothly scroll to each section with fixed-header clearance (`scroll-margin-top`).
-- **Global `box-sizing: border-box` & CSS Custom Properties**: Consistent box model globally with custom CSS variables (`:root`) managing the color palette and design tokens.
-- **Real Use of Flexbox & CSS Grid**:
-  - **Flexbox**: Navigation bar, price alignment, checklist items with custom checkmarks, card vertical distribution, and footer layout.
-  - **CSS Grid**: About section 2-column layout, feature cards, Trainer Bio 3-column grid, Membership Plans 3-column grid, and contact details list.
-- **Responsive & Zero Horizontal Scroll**: Fully responsive across mobile, tablet, and desktop devices without horizontal overflow. Tables feature a dedicated touch-friendly scroll container on small screens.
-- **Pure CSS Mobile Navigation**: Mobile hamburger menu powered entirely through the CSS checkbox hack (`#nav-toggle:checked ~ .nav-menu`).
+A responsive, single-page web application for **FitZone Fitness Studio**, built with **React 19**, **Vite**, and **Tailwind CSS**.
 
 ---
 
-##  Page Sections
+## 🌟 Key Features & Requirements
 
-1. **Header & Navigation**: Brand logo with neon lime accent and anchor navigation links.
-2. **Hero Section**: High-impact headline with neon accents, supporting mission statement, and full-width container divider rule.
-3. **About Section**: Brand philosophy, "Explore Membership" CTA, and feature highlight cards (*Expert Trainers* & *Supportive Community*).
-4. **Class Schedule Section**: Centered section heading with left-aligned session schedule table (Class, Day, Time, Trainer, Level).
-5. **Trainer Bio Section**: 3-card grid highlighting dedicated trainers (James Carter, Sarah Mitchell, and Daniel Brooks) with photos, roles, bios, and direct contact emails.
-6. **Membership Plans Section**: 3-tier pricing grid (*Basic*, *Standard*, *Premium*) with feature checklists and call-to-action buttons.
-7. **Contact / Footer Section**: Direct contact channels (Email, Phone, Address) and studio copyright.
+- **Single Central Data File (`src/data.js`)**:
+  - All listed items (`trainers`, `schedule`, `plans`, and `aboutFeatures`) are structured as arrays of objects in one central data file.
+  - Zero copy-pasted JSX: all cards, schedule rows, pricing tiers, and feature cards are dynamically rendered using `.map()`.
+- **Real Filter on Main Grid (`useState`)**:
+  - The Trainer Bio section features an interactive category filter (`All`, `Strength`, `Group`, `Personal`) powered by React's `useState`.
+  - Filter buttons provide active visual states and real-time list filtering with accessible ARIA tags (`role="group"`, `aria-pressed`).
+- **Controlled Components Reused per Item**:
+  - **`QuantityStepper.jsx`**: Controlled numeric stepper (`value` + `onChange`) for booking weekly trainer sessions, with min/max clamps and disabled states.
+  - **`StarRating.jsx`**: Controlled 5-star rating component (`value` + `onChange`) for rating trainers, storing state per item ID in the parent component.
+- **Pure CSS Responsive Navigation**:
+  - Mobile hamburger menu toggles smoothly with a CSS checkbox hack and Tailwind transitions (no JavaScript required for menu open/close).
+  - Smooth-scrolling navigation with sticky header and section offset clearance (`scroll-margin-top`).
+- **Tailwind Design System**:
+  - Custom dark-mode color palette:
+    - Page background: `#101010`
+    - Card background: `#1c1c1c`
+    - Accent / Neon lime: `#c8ff00`
+    - Borders & Dividers: `#282828` / `#222222`
+  - Typography: Clean `Inter` font stack.
+- **Semantic HTML5 Landmarks**:
+  - Structured with `<header>`, `<nav>`, `<main>`, `<section>`, `<article>`, `<address>`, `<table>`, and `<footer>` for maximum accessibility and SEO structure.
 
 ---
 
-##  File Structure
+## 📁 File Structure
 
 ```text
 Assignment-Esther/
-├── index.html              # Semantic single-page HTML structure
-├── styles.css              # Custom CSS3 styles, variables, grid, and flexbox layouts
-├── README.md               # Project documentation
-└── images/
-    ├── james-carter.png    # Strength Training trainer image
-    ├── sarah-mitchell.png  # Group Fitness trainer image
-    └── daniel-brooks.png   # Personal Training trainer image
+├── index.html                  # HTML entry point with Vite module script
+├── package.json                # Project dependencies and npm scripts
+├── postcss.config.js           # PostCSS configuration
+├── tailwind.config.js          # Tailwind CSS configuration with custom theme
+├── README.md                   # Project documentation
+├── public/
+│   ├── favicon.svg             # Favicon
+│   └── images/                 # Trainer photos served at root
+│       ├── daniel-brooks.png
+│       ├── james-carter.png
+│       └── sarah-mitchell.png
+└── src/
+    ├── main.jsx                # React root mount
+    ├── App.jsx                 # Main layout and top-level state management
+    ├── index.css               # Tailwind directives and global styles
+    ├── data.js                 # Central source of truth (arrays of objects)
+    ├── data/                   # Modular re-exports
+    │   ├── plans.js
+    │   ├── schedule.js
+    │   └── trainers.js
+    └── components/
+        ├── Header.jsx          # Sticky header with CSS hamburger toggle
+        ├── Hero.jsx            # Hero section with primary CTA
+        ├── About.jsx           # Studio philosophy and feature highlight cards
+        ├── ClassSchedule.jsx   # Responsive class timetable
+        ├── TrainerBio.jsx      # Main grid with category filter & trainer cards
+        ├── MembershipPlans.jsx # 3-tier membership pricing cards
+        ├── QuantityStepper.jsx # Controlled session booking stepper per trainer
+        ├── StarRating.jsx      # Controlled 5-star rating per trainer
+        └── Footer.jsx          # Contact details, address, and studio copyright
 ```
 
 ---
 
-##  How to View
+## 🛠️ Technology Stack
 
-1. **Directly in Browser**: Double-click `index.html` or open it with your preferred web browser (Chrome, Safari, Firefox, Edge).
-2. **Local Development Server**:
-   ```bash
- 
-    http.server 8000
-   ```
-   Open `http://localhost:8000` in your browser.
+- **React 19**
+- **Vite**
+- **Tailwind CSS v3**
+- **PostCSS & Autoprefixer**
 
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js (v18 or higher recommended)
+- npm (v9 or higher recommended)
+
+### Installation
+
+```bash
+npm install
+```
+
+### Development Server
+
+To start the local development server with Hot Module Replacement (HMR):
+
+```bash
+npm run dev
+```
+
+Open the printed URL (typically `http://localhost:5173`) in your browser.
+
+### Production Build
+
+To compile and bundle the application for production:
+
+```bash
+npm run build
+```
+
+The production output will be generated in the `dist/` directory.
+
+### Preview Production Build
+
+To test the compiled production build locally:
+
+```bash
+npm run preview
+```
